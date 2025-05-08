@@ -34,6 +34,7 @@ Vagrant.configure(2) do |config|
 
 	# run installation
   NODES.each do |node|
+    config.ssh.insert_key = false
     config.vm.define node[:hostname] do |cfg|
 			cfg.vm.hostname = node[:hostname]
       cfg.vm.network "private_network", ip: node[:ip]

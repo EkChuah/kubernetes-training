@@ -133,7 +133,7 @@
 
 - name: Print version
   debug:
-    msg: "key: {{ __kubernetes_apt_key }}"
+    msg: "key: {{ ansible_hostname }}"
 
 - name: Print version
   debug:

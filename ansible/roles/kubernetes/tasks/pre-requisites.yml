@@ -1,4 +1,7 @@
-
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Disable swap
   shell: swapoff -a
@@ -126,6 +129,13 @@
   stat:
     path: /etc/apt/sources.list.d/kubernetes.list
   register: __kubernetes_apt_source
+
+- name: Ensure keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
 
 - name: Install the key
   shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

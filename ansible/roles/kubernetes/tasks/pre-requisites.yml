@@ -135,7 +135,7 @@
   debug:
     msg: "key: {{ __kubernetes_apt_key.stdout }}"
 
-    - name: Print version
+- name: Print version
   debug:
     msg: "repo: {{ __kubernetes_apt_source.stdout }}"
 

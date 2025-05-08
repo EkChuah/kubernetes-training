@@ -130,30 +130,37 @@
     path: /etc/apt/sources.list.d/kubernetes.list
   register: __kubernetes_apt_source
 
-- name: Create keyrings directory if it doesn't exist
+- name: Ensure keyrings directory exists
   file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
-- name: Download Kubernetes GPG key
+- name: Download Kubernetes GPG key (Release.key)
   ansible.builtin.uri:
     url: https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
     return_content: yes
   register: kube_gpg_key
 
-- name: Save Kubernetes GPG key to file
+- name: Save Kubernetes GPG key to disk in dearmored format
   copy:
-    content: "{{ kube_gpg_key.content }}"
+    content: "{{ kube_gpg_key.content | b64decode | gpg_dearmor }}"
     dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
     mode: '0644'
 
-- name: Add Kubernetes APT repository
+- name: Add Kubernetes apt repository
   copy:
     dest: /etc/apt/sources.list.d/kubernetes.list
     content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
     mode: '0644'
   notify: update_apt_cache
+
+- name: Ensure correct permissions on GPG key file
+  file:
+    path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    mode: '0644'
+    owner: root
+    group: root
 
 - ansible.builtin.meta: flush_handlers
 

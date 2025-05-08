@@ -108,12 +108,12 @@
     state: present
     reload: true
 
-- name: Install dependencies
-  apt:
-    name: "{{ kubernetes_prerequisites_packages }}"
-    state: present
-    update_cache: yes
-    cache_valid_time: 3600
+# - name: Install dependencies
+#   apt:
+#     name: "{{ kubernetes_prerequisites_packages }}"
+#     state: present
+#     update_cache: yes
+#     cache_valid_time: 3600
 
 
 - name: Check if repo already exists

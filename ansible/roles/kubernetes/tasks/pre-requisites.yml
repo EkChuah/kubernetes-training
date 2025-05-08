@@ -130,6 +130,15 @@
     path: /etc/apt/sources.list.d/kubernetes.list
   register: __kubernetes_apt_source
 
+
+- name: Print version
+  debug:
+    msg: "key: {{ __kubernetes_apt_key.stdout }}"
+
+    - name: Print version
+  debug:
+    msg: "repo: {{ __kubernetes_apt_source.stdout }}"
+
 - name: Install the key
   shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 

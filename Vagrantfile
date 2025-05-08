@@ -4,7 +4,6 @@ Vagrant.configure(2) do |config|
   # vagrant plugin install vagrant-faster
   # vagrant plugin install vagrant-cachier
 
-  config.cache.auto_detect = true
 	# Set some variables
   etcHosts = ""
 

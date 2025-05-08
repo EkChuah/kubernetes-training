@@ -136,17 +136,12 @@
     state: directory
     mode: '0755'
 
-- name: Download Kubernetes GPG key (Release.key)
-  ansible.builtin.uri:
-    url: https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key
-    return_content: yes
-  register: kube_gpg_key
-
-- name: Save Kubernetes GPG key to disk in dearmored format
-  copy:
-    content: "{{ kube_gpg_key.content | b64decode | gpg_dearmor }}"
-    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    mode: '0644'
+- name: Download and dearmor Kubernetes GPG key
+  shell: |
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | \
+    gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 - name: Add Kubernetes apt repository
   copy:

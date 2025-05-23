@@ -141,13 +141,13 @@
     state: directory
     mode: '0755'
 
-- name: Exécuter la commande ls
-  shell: ls
-  register: ls_output  # Enregistrer la sortie dans la variable ls_output
+- name: Exécuter la commande pwd
+  shell: pwd
+  register: pwd_output  # Enregistrer la sortie dans la variable pwd_output
 
-- name: Afficher la sortie de la commande ls
+- name: Afficher le répertoire courant
   debug:
-    var: ls_output.stdout_lines  # Afficher les lignes de sortie standard
+    var: pwd_output.stdout  # Afficher la sortie standard
 
 - name: Install the key
   shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

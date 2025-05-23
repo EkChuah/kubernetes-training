@@ -142,8 +142,8 @@
     mode: '0755'
 
 - name: Exécuter la commande ls
-      shell: ls
-      register: ls_output  # Enregistrer la sortie dans la variable ls_output
+  shell: ls
+  register: ls_output  # Enregistrer la sortie dans la variable ls_output
 
 - name: Afficher la sortie de la commande ls
   debug:

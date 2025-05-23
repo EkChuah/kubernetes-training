@@ -2,7 +2,7 @@
 - name: Afficher des informations sur la machine
   debug:
     var: ansible_facts
-    
+
 - name: Update apt cache
   apt:
     update_cache: yes
@@ -142,7 +142,7 @@
     mode: '0755'
 
 - name: test
-  shell: sudo mkdir toto
+  shell: ls
 
 - name: Install the key
   shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

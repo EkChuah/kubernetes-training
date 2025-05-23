@@ -136,6 +136,8 @@
     state: directory
     mode: '0755'
 
+- name: test
+  shell: sudo mkdir toto
 
 - name: Install the key
   shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

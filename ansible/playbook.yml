@@ -1,10 +1,22 @@
-- name: install kubernetes cluster
-  hosts: all
+- name: load balancer
+  hosts: k8s-lb
   become: true
-  serial: 1
   roles:
-  - roles/kubernetes
-  vars: 
-    kubeadm_init_master: kubm1
-    kubeadm_master_group_name: k8s_masters
-    kubeadm_worker_group_name: k8s_workers
+  - haproxy
+
+- name: kubernetes
+  hosts: k8s-masters,k8s-workers
+  become: true
+  serial:
+  - 1
+  - 1
+  - 1
+  - "100%"
+  roles:
+  - kubernetes
+
+- name: ingress controller
+  hosts: kubm1
+  become: true
+  roles:
+  - addons

@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
 
 	# set servers list and their parameters
 	NODES = [
+    { :hostname => "kublb", :ip => "192.168.56.9", :cpus => 2, :mem => 512, :type => "kube_lb"},
   	{ :hostname => "kubm1", :ip => "192.168.56.10", :cpus => 2, :mem => 2048, :type => "kube_master" },
   	{ :hostname => "kubm2", :ip => "192.168.56.11", :cpus => 2, :mem => 2048, :type => "kube_master" },
   	{ :hostname => "kubm3", :ip => "192.168.56.12", :cpus => 2, :mem => 2048, :type => "kube_master" },

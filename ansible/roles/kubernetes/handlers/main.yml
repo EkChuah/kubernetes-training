@@ -1,7 +1,6 @@
 ---
 # handlers file for roles/kubernetes
 
-
 - name: restart_containerd
   service:
     name: containerd

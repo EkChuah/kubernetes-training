@@ -1,11 +1,11 @@
 - name: load balancer
-  hosts: k8s-lb
+  hosts: k8s_lb
   become: true
   roles:
   - haproxy
 
 - name: kubernetes
-  hosts: k8s-masters,k8s-workers
+  hosts: k8s_masters,k8s_workers
   become: true
   serial:
   - 1

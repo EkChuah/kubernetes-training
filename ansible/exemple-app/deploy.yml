@@ -1,37 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-app
+  name: app
   labels:
-    app: simple-app
+    app: app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: simple-app
+      app: app
   template:
     metadata:
       labels:
-        app: simple-app
+        app: app
     spec:
       containers:
-      - name: simple-app
-        image: hashicorp/http-echo:0.2.3
-        args: ["-text", "Bonjour, bienvenue sur mon application Kubernetes !"]
+      - name: app
+        image: paulbouwer/hello-kubernetes:1.7
         ports:
         - containerPort: 8080
+        env:
+        - name: MESSAGE
+          value: Hello toto !!
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: simple-app-service
+  name: app
 spec:
+  type: ClusterIP
   selector:
-    app: simple-app
+    app: app
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 8080
 
 ---
@@ -39,18 +41,32 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: simple-app-ingress
+  name: app
+  annotations:
+    # Enable client certificate authentication
+    ingress.kubernetes.io/auth-tls-verify-client: "on"
+    # Create the secret containing the trusted ca certificates
+    ingress.kubernetes.io/auth-tls-secret: "default/ca-secret"
+    # Specify the verification depth in the client certificates chain
+    ingress.kubernetes.io/auth-tls-verify-depth: "1"
+    # Specify an error page to be redirected to verification errors
+    ingress.kubernetes.io/auth-tls-error-page: "http://www.mysite.com/error-cert.html"
+    # Specify if certificates are passed to upstream server
+    ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
 spec:
   ingressClassName: nginx
   rules:
-  - host: monapp.example.com
+  - host: toto.com
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: simple-app-service
+            name: app
             port:
               number: 80
-
+    tls:
+    - hosts:
+      - toto.com
+      secretName: tls-secre

@@ -45,18 +45,17 @@ listen kubernetes-apiserver-https
 {% endfor %}
 
 frontend http_front
-    bind *:80
-    default_backend http_back
+  bind *:80
+  default_backend http_back
 
 frontend https_in
-    bind *:443 ssl crt /etc/haproxy/cert
-    mode http
-    default_backend http_back
-
+  bind *:443 ssl crt /etc/haproxy/cert/ cert/certificate.pem key /etc/haproxy/cert/certificate.key
+  mode http
+  default_backend http_back
 
 backend http_back
   mode http
   balance roundrobin
 {% for server in groups[kubeadm_worker_group_name] %}
   server {{ server }} {{ server }}:80 check inter 1000
-{% endfor %}    
+{% endfor %}

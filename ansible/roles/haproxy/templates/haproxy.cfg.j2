@@ -49,7 +49,7 @@ frontend http_front
     default_backend http_back
 
 frontend https_in
-    bind *:443 ssl crt /etc/haproxy/certs
+    bind *:443 ssl crt /etc/haproxy/cert
     mode http
     default_backend http_back
 

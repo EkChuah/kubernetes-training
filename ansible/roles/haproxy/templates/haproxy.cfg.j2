@@ -45,7 +45,7 @@ listen kubernetes-apiserver-https
 {% endfor %}
 
 listen kubernetes-ingress
-  bind *:80
+  bind *:443  ssl crt /etc/haproxy/cert/certificate.pem
   mode tcp
   option log-health-checks
   timeout client 10m

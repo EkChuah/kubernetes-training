@@ -5,18 +5,18 @@
 
 - name: Check if certificate already exists
   stat:
-    path: /etc/ssl/certs/certificate.pem
+    path: /etc/haproxy/cert/certificate.pem
   register: __certificate_already_created
 
 
 - name: Create private key (RSA, 4096 bits)
   community.crypto.openssl_privatekey:
-    path: /etc/ssl/certs/certificate.key
+    path: /etc/haproxy/cert/certificate.key
   when: not __certificate_already_created.stat.exists
 
 - name: Create certificate signing request (CSR) for self-signed certificate
   community.crypto.openssl_csr_pipe:
-    privatekey_path: /etc/ssl/certs/certificate.key
+    privatekey_path: /etc/haproxy/cert/certificate.key
     common_name: toto.com
     organization_name: Terrapin Consulting
     subject_alt_name:
@@ -26,9 +26,9 @@
 
 - name: Create self-signed certificate from CSR
   community.crypto.x509_certificate:
-    path: /etc/ssl/certs/certificate.pem
+    path: /etc/haproxy/cert/certificate.pem
     csr_content: "{{ csr.csr }}"
-    privatekey_path: /etc/ssl/certs/certificate.key
+    privatekey_path: /etc/haproxy/cert/certificate.key
     provider: selfsigned
   when: not __certificate_already_created.stat.exists
 

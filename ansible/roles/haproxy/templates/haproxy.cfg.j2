@@ -45,8 +45,7 @@ listen kubernetes-apiserver-https
 {% endfor %}
 
 listen kubernetes-ingress
-  bind :80
-  bind :443  ssl crt /etc/ssl/certs/certificate.pem
+  bind *:443  ssl crt /etc/haproxy/cert/ no-sslv3
   mode tcp
   http-request redirect scheme https unless { ssl_fc }
   option log-health-checks
@@ -56,4 +55,3 @@ listen kubernetes-ingress
 {% for server in groups[kubeadm_worker_group_name] %}
   server {{ server }} {{ server }}:80 check inter 1000
 {% endfor %}    
-

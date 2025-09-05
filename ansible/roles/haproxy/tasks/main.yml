@@ -5,13 +5,13 @@
 
 - name: Check if certificate already exists
   stat:
-    path: /certificate/certificate.pem
+    path: /etc/ssl/certs/certificate.pem
   register: __certificate_already_created
 
 
 - name: Create certificate signing request (CSR) for self-signed certificate
   community.crypto.openssl_csr_pipe:
-    privatekey_path: /certificate/certificate.key
+    privatekey_path: /etc/ssl/certs/certificate.key
     common_name: toto.com
     organization_name: Terrapin Consulting
     subject_alt_name:
@@ -21,9 +21,9 @@
 
 - name: Create self-signed certificate from CSR
   community.crypto.x509_certificate:
-    path: /certificate/certificate.pem
+    path: /etc/ssl/certs/certificate.pem
     csr_content: "{{ csr.csr }}"
-    privatekey_path: /certificate/certificate.key
+    privatekey_path: /etc/ssl/certs/certificate.key
     provider: selfsigned
   when: not __certificate_already_created.stat.exists
 
@@ -34,7 +34,7 @@
 
 - name: Copy admin.conf to .kube/config
   copy:
-    src: /certificate/certificate.pem
+    src: /etc/ssl/certs/certificate.pem
     dest: "/etc/haproxy/certificate.pem"
     remote_src: true
     mode: 0640

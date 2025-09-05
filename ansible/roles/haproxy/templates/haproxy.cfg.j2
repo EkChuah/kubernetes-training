@@ -59,8 +59,8 @@ frontend https_in
 
 
 backend http_back
-    mode http
-    balance roundrobin
-  {% for server in groups[kubeadm_worker_group_name] %}
-    server {{ server }} {{ server }}:80 check inter 1000
-  {% endfor %}    
+  mode http
+  balance roundrobin
+{% for server in groups[kubeadm_worker_group_name] %}
+  server {{ server }} {{ server }}:80 check inter 1000
+{% endfor %}    

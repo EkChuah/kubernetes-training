@@ -46,11 +46,20 @@ listen kubernetes-apiserver-https
 
 frontend http_front
     bind *:80
+    
+    default_backend http_back
+
+frontend https_in
+    bind *:443 ssl crt /etc/ssl/certs/certificate.pem
+    mode http
+    option httpclose
+    option forwardfor
+    reqadd X-Forwarded-Proto:\ https
     default_backend http_back
 
 
-
 backend http_back
+    mode http
     balance roundrobin
     {% for server in groups[kubeadm_worker_group_name] %}
   server {{ server }} {{ server }}:80 check inter 1000

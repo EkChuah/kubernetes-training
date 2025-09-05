@@ -40,9 +40,9 @@ listen kubernetes-apiserver-https
   timeout client 10m
   timeout server 10m
   balance roundrobin
-  {% for server in groups[kubeadm_master_group_name] %}
+{% for server in groups[kubeadm_master_group_name] %}
   server {{ server }} {{ server }}:6443 check check-ssl verify none inter 10000
-  {% endfor %}
+{% endfor %}
 
 frontend http_front
     bind *:80
@@ -61,6 +61,6 @@ frontend https_in
 backend http_back
     mode http
     balance roundrobin
-    {% for server in groups[kubeadm_worker_group_name] %}
+  {% for server in groups[kubeadm_worker_group_name] %}
     server {{ server }} {{ server }}:80 check inter 1000
-    {% endfor %}    
+  {% endfor %}    

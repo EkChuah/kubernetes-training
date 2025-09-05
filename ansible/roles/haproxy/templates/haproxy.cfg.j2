@@ -45,9 +45,8 @@ listen kubernetes-apiserver-https
 {% endfor %}
 
 listen kubernetes-ingress
-  bind *:443  ssl crt /etc/haproxy/cert/ no-sslv3
+  bind *:80
   mode tcp
-  http-request redirect scheme https unless { ssl_fc }
   option log-health-checks
   timeout client 10m
   timeout server 10m

@@ -3,10 +3,42 @@
     update-cache: yes
     cache_valid_time: 3600
 
+- name: Check if certificate already exists
+  stat:
+    path: /certificate/certificate.pem
+  register: __certificate_already_created
+
+
+- name: Create certificate signing request (CSR) for self-signed certificate
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: /certificate/certificate.key
+    common_name: toto.com
+    organization_name: Terrapin Consulting
+    subject_alt_name:
+      - "DNS:toto.com"
+  register: csr
+  when: not __certificate_already_created.stat.exists
+
+- name: Create self-signed certificate from CSR
+  community.crypto.x509_certificate:
+    path: /certificate/certificate.pem
+    csr_content: "{{ csr.csr }}"
+    privatekey_path: /certificate/certificate.key
+    provider: selfsigned
+  when: not __certificate_already_created.stat.exists
+
 - name: install haproxy
   apt:
     name: haproxy
     state: present
+
+- name: Copy admin.conf to .kube/config
+  copy:
+    src: /certificate/certificate.pem
+    dest: "/etc/haproxy/certificate.pem"
+    remote_src: true
+    mode: 0640
+  when: not __certificate_already_created.stat.exists
 
 - name: Install haproxy configuration
   template:

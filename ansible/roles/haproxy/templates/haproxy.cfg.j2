@@ -27,14 +27,14 @@ defaults
     maxconn                 3000
 
 listen stats
-    bind 9000:9000
+    bind :9000
     stats enable
     stats uri /stats
     stats refresh 2s
     stats auth xavki:password
 
 listen kubernetes-apiserver-https
-  bind 6443:6443
+  bind :6443
   mode tcp
   option log-health-checks
   timeout client 10m
@@ -45,8 +45,10 @@ listen kubernetes-apiserver-https
 {% endfor %}
 
 listen kubernetes-ingress
-  bind 80:80
+  bind :80
+  bind :443  ssl crt certificate.pem
   mode tcp
+  http-request redirect scheme https unless { ssl_fc }
   option log-health-checks
   timeout client 10m
   timeout server 10m
@@ -55,14 +57,3 @@ listen kubernetes-ingress
   server {{ server }} {{ server }}:80 check inter 1000
 {% endfor %}    
 
-
-listen kubernetes-ingress-secure
-  bind 443:443
-  mode tcp
-  option log-health-checks
-  timeout client 10m
-  timeout server 10m
-  balance roundrobin
-{% for server in groups[kubeadm_worker_group_name] %}
-  server {{ server }} {{ server }}:443 check inter 1000
-{% endfor %}    

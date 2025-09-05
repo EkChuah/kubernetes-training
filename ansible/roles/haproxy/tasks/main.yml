@@ -8,6 +8,15 @@
     path: /etc/haproxy/cert/certificate.pem
   register: __certificate_already_created
 
+- name: Create cert directory
+  file:
+    path: /etc/haproxy/cert
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+  when: not __certificate_already_created.stat.exists
+
 
 - name: Create private key (RSA, 4096 bits)
   community.crypto.openssl_privatekey:

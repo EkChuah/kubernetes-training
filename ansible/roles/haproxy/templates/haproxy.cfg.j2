@@ -27,14 +27,14 @@ defaults
     maxconn                 3000
 
 listen stats
-    bind :9000
+    bind *:9000
     stats enable
     stats uri /stats
     stats refresh 2s
     stats auth xavki:password
 
 listen kubernetes-apiserver-https
-  bind :6443
+  bind *:6443
   mode tcp
   option log-health-checks
   timeout client 10m

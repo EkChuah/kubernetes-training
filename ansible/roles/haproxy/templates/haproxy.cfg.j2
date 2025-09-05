@@ -44,13 +44,17 @@ listen kubernetes-apiserver-https
   server {{ server }} {{ server }}:6443 check check-ssl verify none inter 10000
 {% endfor %}
 
-listen kubernetes-ingress
-  bind *:443  ssl crt /etc/haproxy/cert/certificate.pem
-  mode tcp
-  option log-health-checks
-  timeout client 10m
-  timeout server 10m
-  balance roundrobin
-{% for server in groups[kubeadm_worker_group_name] %}
+frontend http_front
+    bind *:80
+    default_backend http_back
+
+frontend https_in
+    bind *:443 ssl crt /etc/haproxy/cert/certificate.pem
+    default_backend http_back
+
+
+backend http_back
+    balance roundrobin
+    {% for server in groups[kubeadm_worker_group_name] %}
   server {{ server }} {{ server }}:80 check inter 1000
 {% endfor %}    

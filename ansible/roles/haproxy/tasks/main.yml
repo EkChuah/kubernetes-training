@@ -37,14 +37,6 @@
     name: haproxy
     state: present
 
-- name: Copy admin.conf to .kube/config
-  copy:
-    src: /etc/ssl/certs/certificate.pem
-    dest: "/etc/haproxy/certificate.pem"
-    remote_src: true
-    mode: 0640
-  when: not __certificate_already_created.stat.exists
-
 - name: Install haproxy configuration
   template:
     src: haproxy.cfg.j2

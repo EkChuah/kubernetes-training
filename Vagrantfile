@@ -16,7 +16,6 @@ Vagrant.configure(2) do |config|
   SHELL
 
   config.vm.box = "debian/bookworm64"
-  config.vm.box_url = "debian/bookworm64"
 
 	# set servers list and their parameters
 	NODES = [

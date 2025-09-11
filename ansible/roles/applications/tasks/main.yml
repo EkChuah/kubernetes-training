@@ -26,6 +26,6 @@
 - name: Deploy application
   kubernetes.core.helm:
     name: example-app
-    chart_ref: "{{ playbook_dir }}/charts/app"
+    chart_ref: "/tmp/app/"
     release_namespace: example-app
     create_namespace: true

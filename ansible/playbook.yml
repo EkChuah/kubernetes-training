@@ -20,3 +20,9 @@
   become: true
   roles:
   - addons
+
+- name: applications
+  hosts: kubm1
+  become: true
+  roles:
+  - applications

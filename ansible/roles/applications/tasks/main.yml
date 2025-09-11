@@ -15,7 +15,7 @@
   args:
     creates: /usr/local/bin/helm
 
-- name: Deploy nginx ingress controller
+- name: Deploy application
   kubernetes.core.helm:
     name: example-app
     chart_ref: app

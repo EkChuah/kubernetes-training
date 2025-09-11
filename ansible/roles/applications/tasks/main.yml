@@ -15,6 +15,14 @@
   args:
     creates: /usr/local/bin/helm
 
+- name: Copier le chart Helm sur la VM
+  copy:
+    src: "{{ playbook_dir }}/charts/app/"  
+    dest: "/tmp/app/"                     
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Deploy application
   kubernetes.core.helm:
     name: example-app

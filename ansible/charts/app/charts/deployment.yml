@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: example-app
   labels:
-    app: app
+    app: example-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: app
+      app: example-app
   template:
     metadata:
       labels:
-        app: app
+        app: example-app
     spec:
       containers:
-      - name: app
+      - name: example-app
         image: paulbouwer/hello-kubernetes:1.7
         ports:
         - containerPort: 8080

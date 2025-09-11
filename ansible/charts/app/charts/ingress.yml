@@ -1,18 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app
-  annotations:
-    # Enable client certificate authentication
-    ingress.kubernetes.io/auth-tls-verify-client: "on"
-    # Create the secret containing the trusted ca certificates
-    ingress.kubernetes.io/auth-tls-secret: "default/ca-secret"
-    # Specify the verification depth in the client certificates chain
-    ingress.kubernetes.io/auth-tls-verify-depth: "1"
-    # Specify an error page to be redirected to verification errors
-    ingress.kubernetes.io/auth-tls-error-page: "http://www.mysite.com/error-cert.html"
-    # Specify if certificates are passed to upstream server
-    ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: "true"
+  name: example-app
 spec:
   ingressClassName: nginx
   rules:
@@ -26,7 +15,3 @@ spec:
             name: app
             port:
               number: 80
-    tls:
-    - hosts:
-      - toto.com
-      secretName: tls-secre

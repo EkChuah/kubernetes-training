@@ -24,5 +24,6 @@
 - name: applications
   hosts: kubm1
   become: true
-  roles: applications
-  tags: applications
+  roles: 
+    - role: applications
+      tags: applications

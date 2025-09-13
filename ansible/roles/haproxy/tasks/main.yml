@@ -27,7 +27,6 @@
     privatekey_path: "/etc/ssl/cert.key"
     csr_path: "/etc/ssl/cert.csr"
     provider: selfsigned
-    days: 365
 
 - name: Concaténer clé + cert pour HAProxy
   ansible.builtin.shell: cat /etc/ssl/cert.key /etc/ssl/cert.pem > /etc/ssl/haproxy.pem

@@ -21,7 +21,7 @@
     subject_alt_name:
       - "IP:192.168.56.9"
 
- -name: Générer un certificat auto-signé
+- name: Générer un certificat auto-signé
   community.crypto.openssl_certificate:
     path: "/etc/ssl/cert.pem"
     privatekey_path: "/etc/ssl/cert.key"

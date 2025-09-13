@@ -48,6 +48,10 @@ frontend http_front
   bind *:80
   default_backend http_back
 
+frontend https-in
+  bind *:443 ssl crt /etc/ssl/certs/certificate.pem
+  default_backend http_back
+
 backend http_back
   mode http
   balance roundrobin

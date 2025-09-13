@@ -1,8 +1,9 @@
 - name: load balancer
   hosts: k8s_lb
   become: true
-  roles:
-  - haproxy
+  roles: 
+    - role: haproxy
+      tags: haproxy
 
 - name: kubernetes
   hosts: k8s_masters,k8s_workers
@@ -12,14 +13,16 @@
   - 1
   - 1
   - "100%"
-  roles:
-  - kubernetes
+  roles: 
+    - role: kubernetes
+      tags: kubernetes
 
 - name: ingress controller
   hosts: kubm1
   become: true
-  roles:
-  - addons
+  roles: 
+    - role: addons
+      tags: addons
 
 - name: applications
   hosts: kubm1

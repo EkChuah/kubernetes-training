@@ -22,7 +22,7 @@
       - "IP:192.168.56.9"
 
 - name: Générer un certificat auto-signé
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "/etc/ssl/cert.pem"
     privatekey_path: "/etc/ssl/cert.key"
     csr_path: "/etc/ssl/cert.csr"

@@ -13,20 +13,9 @@
     path: /etc/ssl/certificate.key
   when: not __certificate_already_created.stat.exists
 
-- name: Create certificate signing request (CSR) for self-signed certificate
-  community.crypto.openssl_csr_pipe:
-    privatekey_path: /etc/ssl/certificate.key
-    common_name: toto.com
-    organization_name: Terrapin Consulting
-    subject_alt_name:
-      - "DNS:toto.com"
-  register: csr
-  when: not __certificate_already_created.stat.exists
-
-- name: Create self-signed certificate from CSR
+- name: Create simple self-signed certificate
   community.crypto.x509_certificate:
     path: /etc/ssl/certificate.pem
-    csr_content: "{{ csr.csr }}"
     privatekey_path: /etc/ssl/certificate.key
     provider: selfsigned
   when: not __certificate_already_created.stat.exists

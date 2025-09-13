@@ -49,7 +49,7 @@ frontend http_front
   default_backend http_back
 
 frontend https-in
-  bind *:443 ssl crt /etc/ssl/certs/certificate.pem
+  bind *:443 ssl crt /etc/ssl/certificate.pem
   default_backend http_back
 
 backend http_back

@@ -17,9 +17,9 @@
   community.crypto.openssl_csr:
     path: "/etc/ssl/cert.csr"
     privatekey_path: "/etc/ssl/cert.key"
-    common_name: "192.168.56.9"
+    common_name: "toto.com"
     subject_alt_name:
-      - "IP:192.168.56.9"
+      - "DNS:toto.com"
 
 - name: Générer un certificat auto-signé
   community.crypto.x509_certificate:

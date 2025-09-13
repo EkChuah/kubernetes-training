@@ -5,20 +5,37 @@
 
 - name: Check if certificate already exists
   stat:
-    path: /etc/ssl/certificate.pem
+    path: /etc/ssl/cert.pem
   register: __certificate_already_created
 
 - name: Create private key (RSA, 4096 bits)
   community.crypto.openssl_privatekey:
-    path: /etc/ssl/certificate.key
+    path: /etc/ssl/cert.key
   when: not __certificate_already_created.stat.exists
 
-- name: Create simple self-signed certificate
-  community.crypto.x509_certificate:
-    path: /etc/ssl/certificate.pem
-    privatekey_path: /etc/ssl/certificate.key
+- name: Générer une CSR
+  community.crypto.openssl_csr:
+    path: "/etc/ssl/cert.csr"
+    privatekey_path: "/etc/ssl/cert.key"
+    common_name: "192.168.56.9"
+    subject_alt_name:
+      - "IP:192.168.56.9"
+
+ -name: Générer un certificat auto-signé
+  community.crypto.openssl_certificate:
+    path: "/etc/ssl/cert.pem"
+    privatekey_path: "/etc/ssl/cert.key"
+    csr_path: "/etc/ssl/cert.csr"
     provider: selfsigned
-  when: not __certificate_already_created.stat.exists
+    days: 365
+    subject_alt_name:
+      - "IP:192.168.56.9"
+
+- name: Concaténer clé + cert pour HAProxy
+  ansible.builtin.shell: >
+    cat /etc/ssl/cert.key /etc/ssl/cert.pem > /etc/ssl/haproxy.pem
+  args:
+    creates: /etc/ssl/haproxy.pem
 
 - name: install haproxy
   apt:

@@ -28,4 +28,4 @@
     name: example-app
     chart_ref: "/tmp/app/"
     release_namespace: example-app
-    create_namespace: true
+    create_namespace: true #
